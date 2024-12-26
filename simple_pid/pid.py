@@ -267,3 +267,18 @@ class PID(object):
         self._last_output = None
         self._last_input = None
         self._last_error = None
+
+    def dump_and_clump_Ki(self, dumping_value, max_magnitude):
+        """
+        Clamp and damp the integral term.
+
+        :param dumping_value: The value to damp the integral term by.
+        :param max_magnitude: The maximum magnitude to clamp the integral term to.
+        """
+        # tackle later
+        if self._integral > 0:
+            self._integral = min(self._integral, max_magnitude)
+            self._integral = max(0.0, self._integral - dumping_value)
+        elif self._integral < 0:
+            self._integral = max(self._integral, -max_magnitude)
+            self._integral = min(0.0, self._integral + dumping_value)
